@@ -45,8 +45,17 @@ def gameover(screen: pg.Surface) -> None:  # ゲームオーバー関数
     screen.blit(img, [370, 260])
     screen.blit(img1, [770, 260])
     pg.display.update()
-    time.sleep(1)
+    time.sleep(5)
+    
 
+def bomb():
+    bb_dict={}
+    bb_accs = [a for a in range(1, 11)]
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        bb_dict[r,bb_img]
+    return bb_accs,bb_dict
 
 
 def main():
@@ -54,10 +63,12 @@ def main():
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bb_img = pg.Surface((20,20))
     #爆弾をランダムで出現
-    pg.draw.circle(bb_img,(255,0,0),(10,10),10)
+    
+
     bb_img.set_colorkey((0,0,0))
     bb_rct= bb_img.get_rect()
     bb_rct.center= random.randint(0,WIDTH),random.randint(0,HEIGHT)
+
     vx=5
     vy=5
     #背景
@@ -76,6 +87,7 @@ def main():
 
         if kk_rct.colliderect(bb_rct):
             gameover(screen) 
+            return
             
 
         key_lst = pg.key.get_pressed()
