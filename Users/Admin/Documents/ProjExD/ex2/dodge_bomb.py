@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 #こうかとんの動きの速さ
@@ -22,11 +23,30 @@ def check_boud(rct: pg.Rect) -> tuple[bool,bool]:
     画面内ならTrue,逆はFalse
     """
     yoko,tate=True,True
-    if rct.left < 0 or WIDTH < rct.right: #横判定
+    if rct.left < 0 or WIDTH < rct.right:  # 横判定
         yoko=False
-    if rct.top < 0 or HEIGHT < rct.bottom:  #縦判定
+    if rct.top < 0 or HEIGHT < rct.bottom:  # 縦判定
         tate=False
     return yoko,tate
+
+
+
+def gameover(screen: pg.Surface) -> None:  # ゲームオーバー関数   
+    print("test")
+    overlay = pg.Surface((WIDTH,HEIGHT))
+    pg.draw.rect(overlay,(0,0,0),pg.Rect(0,0,WIDTH,HEIGHT))
+    overlay.set_alpha(128)
+    screen.blit(overlay,[0,0])
+    font = pg.font.Font(None,80)
+    txt = font.render("Game over",True,(255,255,255))
+    screen.blit(txt,[430,260])
+    img=pg.image.load("fig/8.png")
+    img1=img
+    screen.blit(img, [370, 260])
+    screen.blit(img1, [770, 260])
+    pg.display.update()
+    time.sleep(1)
+
 
 
 def main():
@@ -55,7 +75,8 @@ def main():
 
 
         if kk_rct.colliderect(bb_rct):
-            return 
+            gameover(screen) 
+            
 
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
